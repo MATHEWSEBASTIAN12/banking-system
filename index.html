@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Federal Bank UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <div id="loginPage" class="card">
+        <h2>Federal Bank</h2>
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p onclick="showRegister()">Create Account</p>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerPage" class="card hidden">
+        <h2>Create Account</h2>
+        <input type="text" id="regUser" placeholder="Username">
+        <input type="password" id="regPass" placeholder="Password">
+        <button onclick="register()">Register</button>
+        <p onclick="showLogin()">Back to Login</p>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hidden">
+        <h2>Welcome, <span id="userDisplay"></span></h2>
+        <h3>Balance: ₹ <span id="balance">0</span></h3>
+
+        <div class="actions">
+            <input type="number" id="amount" placeholder="Amount">
+            <input type="text" id="receiver" placeholder="Transfer Username">
+
+            <button onclick="deposit()">Deposit</button>
+            <button onclick="withdraw()">Withdraw</button>
+            <button onclick="transfer()">Transfer</button>
+            <button onclick="loan()">Request Loan</button>
+        </div>
+
+        <h3>Transactions</h3>
+        <ul id="history"></ul>
+
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
