@@ -1,0 +1,63 @@
+body {
+    font-family: Arial;
+    background: linear-gradient(to right, #004080, #0073e6);
+    color: white;
+    text-align: center;
+}
+
+.container {
+    margin-top: 60px;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 25px;
+    width: 320px;
+    margin: auto;
+    border-radius: 10px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px;
+}
+
+button {
+    padding: 10px;
+    width: 95%;
+    margin: 5px;
+    background: #004080;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00264d;
+}
+
+.hidden {
+    display: none;
+}
+
+.logout {
+    background: red;
+    margin-top: 15px;
+}
+
+#dashboard {
+    background: white;
+    color: black;
+    padding: 20px;
+    width: 400px;
+    margin: auto;
+    border-radius: 10px;
+}
+
+ul {
+    text-align: left;
+    max-height: 150px;
+    overflow-y: auto;
+}
