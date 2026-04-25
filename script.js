@@ -242,3 +242,16 @@ function backToDashboard() {
     document.getElementById("loanPage").classList.add("hidden");
     document.getElementById("dashboard").classList.remove("hidden");
 }
+function deleteAccount() {
+    let confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+
+    if (!confirmDelete) return;
+
+    // Remove from storage
+    localStorage.removeItem(currentUser.username);
+
+    alert("Your account has been deleted.");
+
+    // Go back to login page
+    location.reload();
+}
