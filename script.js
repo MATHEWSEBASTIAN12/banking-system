@@ -255,3 +255,13 @@ function deleteAccount() {
     // Go back to login page
     location.reload();
 }
+document.addEventListener("DOMContentLoaded", function () {
+    let btn = document.getElementById("deleteBtn");
+
+    if (btn) {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            deleteAccount();
+        });
+    }
+});
