@@ -13,16 +13,16 @@ function showLogin() {
 
 /* REGISTER */
 function register() {
-    let user = regUser.value;
+    let user = regUser.value.trim();
     let pass = regPass.value;
 
     if (!user || pass.length < 6) {
-        alert("Invalid details");
+        alert("Enter valid username & password (min 6 chars)");
         return;
     }
 
     if (localStorage.getItem(user)) {
-        alert("User exists");
+        alert("User already exists");
         return;
     }
 
@@ -34,19 +34,19 @@ function register() {
     };
 
     localStorage.setItem(user, JSON.stringify(account));
-    alert("Account created");
+    alert("Account created successfully");
     showLogin();
 }
 
 /* LOGIN */
 function login() {
-    let user = loginUser.value;
+    let user = loginUser.value.trim();
     let pass = loginPass.value;
 
     let data = JSON.parse(localStorage.getItem(user));
 
     if (!data || data.password !== pass) {
-        alert("Invalid login");
+        alert("Invalid login credentials");
         return;
     }
 
@@ -59,7 +59,7 @@ function login() {
     updateUI();
 }
 
-/* UI UPDATE */
+/* UPDATE UI */
 function updateUI() {
     balance.innerText = currentUser.balance;
     history.innerHTML = "";
@@ -73,10 +73,11 @@ function updateUI() {
     updateSidebar();
 }
 
+/* SIDEBAR UPDATE */
 function updateSidebar() {
     sideName.innerText = "Name: " + currentUser.username;
     sideUser.innerText = "Username: " + currentUser.username;
-    sideID.innerText = "Bank ID: FB" + Math.floor(Math.random()*10000);
+    sideID.innerText = "Bank ID: FB" + Math.floor(Math.random() * 10000);
     sideBalance.innerText = currentUser.balance;
 }
 
@@ -89,19 +90,30 @@ function save() {
 /* BANK ACTIONS */
 function deposit() {
     let amt = parseInt(amount.value);
-    if (amt > 0) {
-        currentUser.balance += amt;
-        currentUser.history.push("Deposited ₹" + amt);
-        save();
+
+    if (isNaN(amt) || amt <= 0) {
+        alert("Enter valid amount");
+        return;
     }
+
+    currentUser.balance += amt;
+    currentUser.history.push("Deposited ₹" + amt);
+    save();
 }
 
 function withdraw() {
     let amt = parseInt(amount.value);
+
+    if (isNaN(amt) || amt <= 0) {
+        alert("Enter valid amount");
+        return;
+    }
+
     if (amt > currentUser.balance) {
         alert("Insufficient balance");
         return;
     }
+
     currentUser.balance -= amt;
     currentUser.history.push("Withdrew ₹" + amt);
     save();
@@ -109,11 +121,17 @@ function withdraw() {
 
 function transfer() {
     let amt = parseInt(amount.value);
-    let rec = receiver.value;
+    let rec = receiver.value.trim();
+
+    if (isNaN(amt) || amt <= 0 || !rec) {
+        alert("Enter valid details");
+        return;
+    }
 
     let receiverAcc = JSON.parse(localStorage.getItem(rec));
+
     if (!receiverAcc) {
-        alert("User not found");
+        alert("Receiver not found");
         return;
     }
 
@@ -140,49 +158,84 @@ function openLoanPage() {
     loanUser.value = currentUser.username;
 }
 
+/* FIXED LOAN FUNCTION */
 function processLoan() {
-    let user = loanUser.value;
-    let pass = loanPass.value;
+    let user = loanUser.value.trim();
+    let pass = loanPass.value.trim();
     let amt = parseInt(loanAmount.value);
+
+    // VALIDATION
+    if (!user || !pass || isNaN(amt)) {
+        alert("Please fill all fields correctly");
+        return;
+    }
 
     if (user !== currentUser.username || pass !== currentUser.password) {
         alert("Invalid credentials");
         return;
     }
 
-    let interest = 0.07;
-    let time = amt >= 100000 ? 16 : 12;
+    if (amt < 100000) {
+        alert("Minimum loan amount is ₹100000");
+        return;
+    }
 
-    let total = amt + (amt * interest);
+    // LOAN RULES
+    let interestRate = 0.07;
+    let time = (amt === 100000) ? 12 : 16;
 
+    let total = Math.round(amt + (amt * interestRate));
+
+    // CREDIT MONEY
     currentUser.balance += amt;
-    currentUser.history.push(`Loan ₹${amt} | 7% | ${time} months`);
 
-    save();
+    // SAVE HISTORY
+    currentUser.history.push(
+        `Loan ₹${amt} | Interest 7% | ${time} months`
+    );
 
-    alert("Loan granted! Repay ₹" + total + " in " + time + " months");
+    // SAVE DATA
+    localStorage.setItem(currentUser.username, JSON.stringify(currentUser));
 
+    // UPDATE UI
+    updateUI();
+
+    // SUCCESS ALERT
+    alert("Your loan request granted. Kindly repay ₹" + total + " within " + time + " months.");
+
+    // CLEAR FIELDS
+    loanPass.value = "";
+    loanAmount.value = "";
+    collateral.value = "";
+
+    // GO BACK TO DASHBOARD
     loanPage.classList.add("hidden");
     dashboard.classList.remove("hidden");
 }
 
-/* CHEQUE */
+/* CHEQUE DOWNLOAD */
 function downloadCheque() {
     let html = `
-    <html><body style="border:2px solid black;padding:20px;width:600px;font-family:Arial">
-    <h2>FEDERAL BANK</h2>
-    <p>Pay: ______________________</p>
-    <p>Amount: ___________________</p>
-    <p>Name: ${currentUser.username}</p>
-    <p>Balance: ₹${currentUser.balance}</p>
-    <div style="border:2px solid green;border-radius:50%;width:100px;height:100px;text-align:center;padding-top:30px;color:green">
-    FEDERAL BANK
-    </div>
-    <p>Signature: ______________</p>
-    </body></html>
+    <html>
+    <body style="border:2px solid black;padding:20px;width:600px;font-family:Arial">
+        <h2>FEDERAL BANK</h2>
+        <p>Date: __________</p>
+        <p>Pay: __________________________</p>
+        <p>Amount: _______________________</p>
+        <br>
+        <p>Name: ${currentUser.username}</p>
+        <p>Balance: ₹${currentUser.balance}</p>
+        <br><br>
+        <div style="border:2px solid green;border-radius:50%;width:100px;height:100px;text-align:center;padding-top:30px;color:green">
+            FEDERAL BANK
+        </div>
+        <br>
+        <p>Signature: __________________</p>
+    </body>
+    </html>
     `;
 
-    let blob = new Blob([html], {type:"text/html"});
+    let blob = new Blob([html], { type: "text/html" });
     let a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "cheque.html";
