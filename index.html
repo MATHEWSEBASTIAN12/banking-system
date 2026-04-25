@@ -1,54 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Federal Bank UI</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<div class="sidebar">
+    <h2>Federal Bank</h2>
 
-<div class="container">
-
-    <!-- LOGIN -->
-    <div id="loginPage" class="card">
-        <h2>Federal Bank</h2>
-        <input type="text" id="loginUser" placeholder="Username">
-        <input type="password" id="loginPass" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <p onclick="showRegister()">Create Account</p>
+    <div class="bank-section">
+        <h3>🏦 Bank Details</h3>
+        <p><b>CEO:</b> Mathew Sebastian</p>
+        <p><b>General Manager:</b> Arjun Nair (MBA Finance, IIM Bangalore)</p>
     </div>
 
-    <!-- REGISTER -->
-    <div id="registerPage" class="card hidden">
-        <h2>Create Account</h2>
-        <input type="text" id="regUser" placeholder="Username">
-        <input type="password" id="regPass" placeholder="Password">
-        <button onclick="register()">Register</button>
-        <p onclick="showLogin()">Back to Login</p>
+    <div class="bank-section">
+        <h3>📍 Branches</h3>
+        <p>Ettumanoor</p>
+        <p>Kuravilangad</p>
+        <p>Pala</p>
+        <p>Kanjirapally</p>
     </div>
 
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="hidden">
-        <h2>Welcome, <span id="userDisplay"></span></h2>
-        <h3>Balance: ₹ <span id="balance">0</span></h3>
-
-        <div class="actions">
-            <input type="number" id="amount" placeholder="Amount">
-            <input type="text" id="receiver" placeholder="Transfer Username">
-
-            <button onclick="deposit()">Deposit</button>
-            <button onclick="withdraw()">Withdraw</button>
-            <button onclick="transfer()">Transfer</button>
-            <button onclick="loan()">Request Loan</button>
-        </div>
-
-        <h3>Transactions</h3>
-        <ul id="history"></ul>
-
-        <button class="logout" onclick="logout()">Logout</button>
+    <div class="bank-section">
+        <h3>👨‍💼 Zonal Managers</h3>
+        <p>Pala – Rahul Menon (M.Com, CA)</p>
+        <p>Kanjirapally – Vivek Thomas (MBA Banking)</p>
+        <p>Ettumanoor – Sreeraj Pillai (MBA Finance)</p>
+        <p>Kuravilangad – Nithin Joseph (M.Com Finance)</p>
     </div>
 
+    <hr>
+
+    <div class="bank-section">
+        <h3>👤 User Details</h3>
+        <p id="sideName"></p>
+        <p id="sideUser"></p>
+        <p id="sideID"></p>
+        <p><b>Balance:</b> ₹ <span id="sideBalance"></span></p>
+
+        <button onclick="downloadCheque()">Download Cheque</button>
+    </div>
 </div>
-
-<script src="script.js"></script>
-</body>
-</html>
