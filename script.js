@@ -192,21 +192,24 @@ function processLoan() {
     // CREDIT MONEY
     currentUser.balance += amt;
 
-    currentUser.history.push(
-        `Loan ₹${amt} | 7% | ${time} months`
-    );
+    currentUser.history.push(`Loan ₹${amt} | 7% | ${time} months`);
 
-    // SAVE + UPDATE UI
+    // SAVE + UPDATE
     localStorage.setItem(currentUser.username, JSON.stringify(currentUser));
     updateUI();
 
-    // ALERT
-    alert("Your loan request granted. Kindly repay ₹" + total + " within " + time + " months.");
+    // SHOW ALERT
+    alert("Loan granted! Repay ₹" + total + " within " + time + " months.");
+
+    // SWITCH PAGE
+    document.getElementById("loanPage").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
 
     // CLEAR FIELDS
     document.getElementById("loanPass").value = "";
     document.getElementById("loanAmount").value = "";
     document.getElementById("collateral").value = "";
+}
 
     // RETURN TO DASHBOARD
     document.getElementById("loanPage").classList.add("hidden");
@@ -240,3 +243,13 @@ function downloadCheque() {
 function logout() {
     location.reload();
 }
+document.addEventListener("DOMContentLoaded", function () {
+    let btn = document.getElementById("loanBtn");
+
+    if (btn) {
+        btn.addEventListener("click", function (event) {
+            event.preventDefault(); // 🔥 stops page refresh
+            processLoan();
+        });
+    }
+});
