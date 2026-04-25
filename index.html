@@ -51,13 +51,30 @@
     <div class="content">
 
         <!-- LOGIN -->
-        <div id="loginPage" class="card">
-            <h2>Login</h2>
-            <input id="loginUser" placeholder="Username">
-            <input id="loginPass" type="password" placeholder="Password">
-            <button onclick="login()">Login</button>
-            <p onclick="showRegister()">Create Account</p>
-        </div>
+      <div id="loginPage" class="card">
+    <h2>Login</h2>
+
+    <input id="loginUser" placeholder="Username">
+    <input id="loginPass" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <!-- 🔽 ADD THIS HERE -->
+    <button onclick="showUPI()">Online UPI Payments</button>
+
+    <div id="upiSection" class="hidden">
+        <button>Debit Card</button>
+        <button>Credit Card</button>
+        <button>Paytm</button>
+        <button>GPay</button>
+        <button>PhonePe</button>
+        <button>Amazon Pay</button>
+        <button>RuPay</button>
+    </div>
+    <!-- 🔼 END -->
+
+    <p onclick="showRegister()">Create Account</p>
+</div>
 
         <!-- REGISTER -->
         <div id="registerPage" class="card hidden">
