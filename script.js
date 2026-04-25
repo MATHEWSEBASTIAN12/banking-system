@@ -168,7 +168,7 @@ function openLoanPage() {
 
 /* FINAL WORKING LOAN FUNCTION */
 function processLoan() {
-
+alert("ProcessLoan triggered");
     let user = document.getElementById("loanUser").value.trim();
     let pass = document.getElementById("loanPass").value.trim();
     let amt = parseInt(document.getElementById("loanAmount").value);
@@ -237,4 +237,8 @@ function downloadCheque() {
 /* LOGOUT */
 function logout() {
     location.reload();
+}
+function backToDashboard() {
+    document.getElementById("loanPage").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
 }
