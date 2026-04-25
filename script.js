@@ -11,13 +11,18 @@ function showLogin() {
     loginPage.classList.remove("hidden");
 }
 
+/* UPI SECTION */
+function showUPI() {
+    document.getElementById("upiSection").classList.toggle("hidden");
+}
+
 /* REGISTER */
 function register() {
     let user = regUser.value.trim();
     let pass = regPass.value;
 
     if (!user || pass.length < 6) {
-        alert("Enter valid username & password (min 6 chars)");
+        alert("Enter valid details");
         return;
     }
 
@@ -34,7 +39,7 @@ function register() {
     };
 
     localStorage.setItem(user, JSON.stringify(account));
-    alert("Account created successfully");
+    alert("Account created");
     showLogin();
 }
 
@@ -46,7 +51,7 @@ function login() {
     let data = JSON.parse(localStorage.getItem(user));
 
     if (!data || data.password !== pass) {
-        alert("Invalid login credentials");
+        alert("Invalid login");
         return;
     }
 
@@ -73,7 +78,7 @@ function updateUI() {
     updateSidebar();
 }
 
-/* SIDEBAR UPDATE */
+/* SIDEBAR */
 function updateSidebar() {
     sideName.innerText = "Name: " + currentUser.username;
     sideUser.innerText = "Username: " + currentUser.username;
@@ -164,9 +169,8 @@ function processLoan() {
     let pass = loanPass.value.trim();
     let amt = parseInt(loanAmount.value);
 
-    // VALIDATION
     if (!user || !pass || isNaN(amt)) {
-        alert("Please fill all fields correctly");
+        alert("Fill all fields correctly");
         return;
     }
 
@@ -175,67 +179,54 @@ function processLoan() {
         return;
     }
 
-    if (amt < 100000) {
-        alert("Minimum loan amount is ₹100000");
+    if (amt < 4999) {
+        alert("Minimum loan amount is ₹4999");
         return;
     }
 
-    // LOAN RULES
-    let interestRate = 0.07;
-    let time = (amt === 100000) ? 12 : 16;
+    let interest = 0.07;
+    let time = amt <= 100000 ? 12 : 16;
 
-    let total = Math.round(amt + (amt * interestRate));
+    let total = Math.round(amt + (amt * interest));
 
     // CREDIT MONEY
     currentUser.balance += amt;
 
-    // SAVE HISTORY
     currentUser.history.push(
-        `Loan ₹${amt} | Interest 7% | ${time} months`
+        `Loan ₹${amt} | 7% | ${time} months`
     );
 
-    // SAVE DATA
-    localStorage.setItem(currentUser.username, JSON.stringify(currentUser));
+    save(); // IMPORTANT
 
-    // UPDATE UI
-    updateUI();
-
-    // SUCCESS ALERT
     alert("Your loan request granted. Kindly repay ₹" + total + " within " + time + " months.");
 
-    // CLEAR FIELDS
+    // CLEAR
     loanPass.value = "";
     loanAmount.value = "";
     collateral.value = "";
 
-    // GO BACK TO DASHBOARD
+    // RETURN TO DASHBOARD
     loanPage.classList.add("hidden");
     dashboard.classList.remove("hidden");
 }
 
-/* CHEQUE DOWNLOAD */
+/* CHEQUE */
 function downloadCheque() {
     let html = `
-    <html>
-    <body style="border:2px solid black;padding:20px;width:600px;font-family:Arial">
-        <h2>FEDERAL BANK</h2>
-        <p>Date: __________</p>
-        <p>Pay: __________________________</p>
-        <p>Amount: _______________________</p>
-        <br>
-        <p>Name: ${currentUser.username}</p>
-        <p>Balance: ₹${currentUser.balance}</p>
-        <br><br>
-        <div style="border:2px solid green;border-radius:50%;width:100px;height:100px;text-align:center;padding-top:30px;color:green">
-            FEDERAL BANK
-        </div>
-        <br>
-        <p>Signature: __________________</p>
-    </body>
-    </html>
+    <html><body style="border:2px solid black;padding:20px;width:600px;font-family:Arial">
+    <h2>FEDERAL BANK</h2>
+    <p>Pay: ______________________</p>
+    <p>Amount: ___________________</p>
+    <p>Name: ${currentUser.username}</p>
+    <p>Balance: ₹${currentUser.balance}</p>
+    <div style="border:2px solid green;border-radius:50%;width:100px;height:100px;text-align:center;padding-top:30px;color:green">
+    FEDERAL BANK
+    </div>
+    <p>Signature: ______________</p>
+    </body></html>
     `;
 
-    let blob = new Blob([html], { type: "text/html" });
+    let blob = new Blob([html], {type:"text/html"});
     let a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "cheque.html";
