@@ -1,37 +1,112 @@
-<div class="sidebar">
-    <h2>Federal Bank</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Federal Bank UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <div class="bank-section">
-        <h3>🏦 Bank Details</h3>
-        <p><b>CEO:</b> Mathew Sebastian</p>
-        <p><b>General Manager:</b> Arjun Nair (MBA Finance, IIM Bangalore)</p>
+<div class="main">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Federal Bank</h2>
+
+        <div class="section">
+            <h3>🏦 Bank Details</h3>
+            <p><b>CEO:</b> Mathew Sebastian</p>
+            <p><b>GM:</b> Arjun Nair (MBA Finance, IIM Bangalore)</p>
+        </div>
+
+        <div class="section">
+            <h3>📍 Branches</h3>
+            <p>Ettumanoor</p>
+            <p>Kuravilangad</p>
+            <p>Pala</p>
+            <p>Kanjirapally</p>
+        </div>
+
+        <div class="section">
+            <h3>👨‍💼 Zonal Managers</h3>
+            <p>Pala – Rahul Menon</p>
+            <p>Kanjirapally – Vivek Thomas</p>
+            <p>Ettumanoor – Sreeraj Pillai</p>
+            <p>Kuravilangad – Nithin Joseph</p>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h3>👤 User Details</h3>
+            <p id="sideName"></p>
+            <p id="sideUser"></p>
+            <p id="sideID"></p>
+            <p><b>Balance:</b> ₹ <span id="sideBalance"></span></p>
+
+            <button onclick="downloadCheque()">Download Cheque</button>
+        </div>
     </div>
 
-    <div class="bank-section">
-        <h3>📍 Branches</h3>
-        <p>Ettumanoor</p>
-        <p>Kuravilangad</p>
-        <p>Pala</p>
-        <p>Kanjirapally</p>
-    </div>
+    <!-- MAIN CONTENT -->
+    <div class="content">
 
-    <div class="bank-section">
-        <h3>👨‍💼 Zonal Managers</h3>
-        <p>Pala – Rahul Menon (M.Com, CA)</p>
-        <p>Kanjirapally – Vivek Thomas (MBA Banking)</p>
-        <p>Ettumanoor – Sreeraj Pillai (MBA Finance)</p>
-        <p>Kuravilangad – Nithin Joseph (M.Com Finance)</p>
-    </div>
+        <!-- LOGIN -->
+        <div id="loginPage" class="card">
+            <h2>Login</h2>
+            <input id="loginUser" placeholder="Username">
+            <input id="loginPass" type="password" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <p onclick="showRegister()">Create Account</p>
+        </div>
 
-    <hr>
+        <!-- REGISTER -->
+        <div id="registerPage" class="card hidden">
+            <h2>Register</h2>
+            <input id="regUser" placeholder="Username">
+            <input id="regPass" type="password" placeholder="Password">
+            <button onclick="register()">Register</button>
+            <p onclick="showLogin()">Back to Login</p>
+        </div>
 
-    <div class="bank-section">
-        <h3>👤 User Details</h3>
-        <p id="sideName"></p>
-        <p id="sideUser"></p>
-        <p id="sideID"></p>
-        <p><b>Balance:</b> ₹ <span id="sideBalance"></span></p>
+        <!-- DASHBOARD -->
+        <div id="dashboard" class="hidden">
+            <h2>Welcome, <span id="userDisplay"></span></h2>
+            <h3>Balance: ₹ <span id="balance"></span></h3>
 
-        <button onclick="downloadCheque()">Download Cheque</button>
+            <input id="amount" placeholder="Amount">
+            <input id="receiver" placeholder="Receiver Username">
+
+            <button onclick="deposit()">Deposit</button>
+            <button onclick="withdraw()">Withdraw</button>
+            <button onclick="transfer()">Transfer</button>
+            <button onclick="openLoanPage()">Request Loan</button>
+
+            <h3>Transactions</h3>
+            <ul id="history"></ul>
+
+            <div class="ads">
+                <h3>Offers</h3>
+                <p>💳 5% cashback on cards</p>
+                <p>🏡 Home loan at 7%</p>
+                <p>🚗 Car loan fast approval</p>
+            </div>
+
+            <button class="logout" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- LOAN PAGE -->
+        <div id="loanPage" class="card hidden">
+            <h2>Loan Request</h2>
+            <input id="loanUser" placeholder="Username">
+            <input id="loanPass" type="password" placeholder="Password">
+            <input id="loanAmount" placeholder="Loan Amount">
+            <input id="collateral" placeholder="Collateral">
+            <button onclick="processLoan()">Proceed Loan</button>
+        </div>
+
     </div>
 </div>
+
+<script src="script.js"></script>
+</body>
+</html>
