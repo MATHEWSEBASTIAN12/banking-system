@@ -2,24 +2,24 @@ let currentUser = null;
 
 /* PAGE SWITCH */
 function showRegister() {
-    loginPage.classList.add("hidden");
-    registerPage.classList.remove("hidden");
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("registerPage").classList.remove("hidden");
 }
 
 function showLogin() {
-    registerPage.classList.add("hidden");
-    loginPage.classList.remove("hidden");
+    document.getElementById("registerPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
 }
 
-/* UPI SECTION */
+/* UPI */
 function showUPI() {
     document.getElementById("upiSection").classList.toggle("hidden");
 }
 
 /* REGISTER */
 function register() {
-    let user = regUser.value.trim();
-    let pass = regPass.value;
+    let user = document.getElementById("regUser").value.trim();
+    let pass = document.getElementById("regPass").value;
 
     if (!user || pass.length < 6) {
         alert("Enter valid details");
@@ -45,8 +45,8 @@ function register() {
 
 /* LOGIN */
 function login() {
-    let user = loginUser.value.trim();
-    let pass = loginPass.value;
+    let user = document.getElementById("loginUser").value.trim();
+    let pass = document.getElementById("loginPass").value;
 
     let data = JSON.parse(localStorage.getItem(user));
 
@@ -57,22 +57,25 @@ function login() {
 
     currentUser = data;
 
-    loginPage.classList.add("hidden");
-    dashboard.classList.remove("hidden");
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
 
-    userDisplay.innerText = user;
+    document.getElementById("userDisplay").innerText = user;
+
     updateUI();
 }
 
 /* UPDATE UI */
 function updateUI() {
-    balance.innerText = currentUser.balance;
-    history.innerHTML = "";
+    document.getElementById("balance").innerText = currentUser.balance;
+
+    let historyList = document.getElementById("history");
+    historyList.innerHTML = "";
 
     currentUser.history.forEach(item => {
         let li = document.createElement("li");
         li.innerText = item;
-        history.appendChild(li);
+        historyList.appendChild(li);
     });
 
     updateSidebar();
@@ -80,10 +83,10 @@ function updateUI() {
 
 /* SIDEBAR */
 function updateSidebar() {
-    sideName.innerText = "Name: " + currentUser.username;
-    sideUser.innerText = "Username: " + currentUser.username;
-    sideID.innerText = "Bank ID: FB" + Math.floor(Math.random() * 10000);
-    sideBalance.innerText = currentUser.balance;
+    document.getElementById("sideName").innerText = "Name: " + currentUser.username;
+    document.getElementById("sideUser").innerText = "Username: " + currentUser.username;
+    document.getElementById("sideID").innerText = "Bank ID: FB" + Math.floor(Math.random()*10000);
+    document.getElementById("sideBalance").innerText = currentUser.balance;
 }
 
 /* SAVE */
@@ -92,9 +95,9 @@ function save() {
     updateUI();
 }
 
-/* BANK ACTIONS */
+/* BANK FUNCTIONS */
 function deposit() {
-    let amt = parseInt(amount.value);
+    let amt = parseInt(document.getElementById("amount").value);
 
     if (isNaN(amt) || amt <= 0) {
         alert("Enter valid amount");
@@ -107,7 +110,7 @@ function deposit() {
 }
 
 function withdraw() {
-    let amt = parseInt(amount.value);
+    let amt = parseInt(document.getElementById("amount").value);
 
     if (isNaN(amt) || amt <= 0) {
         alert("Enter valid amount");
@@ -125,8 +128,8 @@ function withdraw() {
 }
 
 function transfer() {
-    let amt = parseInt(amount.value);
-    let rec = receiver.value.trim();
+    let amt = parseInt(document.getElementById("amount").value);
+    let rec = document.getElementById("receiver").value.trim();
 
     if (isNaN(amt) || amt <= 0 || !rec) {
         alert("Enter valid details");
@@ -155,7 +158,7 @@ function transfer() {
     save();
 }
 
-/* LOAN PAGE (UPDATED) */
+/* OPEN LOAN PAGE */
 function openLoanPage() {
     document.getElementById("dashboard").classList.add("hidden");
     document.getElementById("loanPage").classList.remove("hidden");
@@ -163,7 +166,7 @@ function openLoanPage() {
     document.getElementById("loanUser").value = currentUser.username;
 }
 
-/* PROCESS LOAN (UPDATED FIX) */
+/* FINAL WORKING LOAN FUNCTION */
 function processLoan() {
 
     let user = document.getElementById("loanUser").value.trim();
@@ -192,28 +195,20 @@ function processLoan() {
     // CREDIT MONEY
     currentUser.balance += amt;
 
-    currentUser.history.push(`Loan ₹${amt} | 7% | ${time} months`);
+    currentUser.history.push("Loan ₹" + amt);
 
-    // SAVE + UPDATE
-    localStorage.setItem(currentUser.username, JSON.stringify(currentUser));
-    updateUI();
+    save(); // 🔥 CRITICAL FIX
 
-    // SHOW ALERT
-    alert("Loan granted! Repay ₹" + total + " within " + time + " months.");
+    alert("Loan granted! Repay ₹" + total + " in " + time + " months.");
 
-    // SWITCH PAGE
+    // SWITCH BACK
     document.getElementById("loanPage").classList.add("hidden");
     document.getElementById("dashboard").classList.remove("hidden");
 
-    // CLEAR FIELDS
+    // CLEAR INPUTS
     document.getElementById("loanPass").value = "";
     document.getElementById("loanAmount").value = "";
     document.getElementById("collateral").value = "";
-}
-
-    // RETURN TO DASHBOARD
-    document.getElementById("loanPage").classList.add("hidden");
-    document.getElementById("dashboard").classList.remove("hidden");
 }
 
 /* CHEQUE */
@@ -243,13 +238,3 @@ function downloadCheque() {
 function logout() {
     location.reload();
 }
-document.addEventListener("DOMContentLoaded", function () {
-    let btn = document.getElementById("loanBtn");
-
-    if (btn) {
-        btn.addEventListener("click", function (event) {
-            event.preventDefault(); // 🔥 stops page refresh
-            processLoan();
-        });
-    }
-});
