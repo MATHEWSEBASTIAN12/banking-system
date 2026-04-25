@@ -155,19 +155,20 @@ function transfer() {
     save();
 }
 
-/* LOAN PAGE */
+/* LOAN PAGE (UPDATED) */
 function openLoanPage() {
-    dashboard.classList.add("hidden");
-    loanPage.classList.remove("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("loanPage").classList.remove("hidden");
 
-    loanUser.value = currentUser.username;
+    document.getElementById("loanUser").value = currentUser.username;
 }
 
-/* FIXED LOAN FUNCTION */
+/* PROCESS LOAN (UPDATED FIX) */
 function processLoan() {
-    let user = loanUser.value.trim();
-    let pass = loanPass.value.trim();
-    let amt = parseInt(loanAmount.value);
+
+    let user = document.getElementById("loanUser").value.trim();
+    let pass = document.getElementById("loanPass").value.trim();
+    let amt = parseInt(document.getElementById("loanAmount").value);
 
     if (!user || !pass || isNaN(amt)) {
         alert("Fill all fields correctly");
@@ -186,7 +187,6 @@ function processLoan() {
 
     let interest = 0.07;
     let time = amt <= 100000 ? 12 : 16;
-
     let total = Math.round(amt + (amt * interest));
 
     // CREDIT MONEY
@@ -196,18 +196,21 @@ function processLoan() {
         `Loan ₹${amt} | 7% | ${time} months`
     );
 
-    save(); // IMPORTANT
+    // SAVE + UPDATE UI
+    localStorage.setItem(currentUser.username, JSON.stringify(currentUser));
+    updateUI();
 
+    // ALERT
     alert("Your loan request granted. Kindly repay ₹" + total + " within " + time + " months.");
 
-    // CLEAR
-    loanPass.value = "";
-    loanAmount.value = "";
-    collateral.value = "";
+    // CLEAR FIELDS
+    document.getElementById("loanPass").value = "";
+    document.getElementById("loanAmount").value = "";
+    document.getElementById("collateral").value = "";
 
     // RETURN TO DASHBOARD
-    loanPage.classList.add("hidden");
-    dashboard.classList.remove("hidden");
+    document.getElementById("loanPage").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
 }
 
 /* CHEQUE */
