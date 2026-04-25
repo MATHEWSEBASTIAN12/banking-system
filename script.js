@@ -1,6 +1,6 @@
 let currentUser = null;
 
-// Page switching
+/* PAGE SWITCH */
 function showRegister() {
     loginPage.classList.add("hidden");
     registerPage.classList.remove("hidden");
@@ -11,18 +11,18 @@ function showLogin() {
     loginPage.classList.remove("hidden");
 }
 
-// Register
+/* REGISTER */
 function register() {
-    let user = regUser.value.trim();
+    let user = regUser.value;
     let pass = regPass.value;
 
     if (!user || pass.length < 6) {
-        alert("Enter valid username & password (min 6 chars)");
+        alert("Invalid details");
         return;
     }
 
     if (localStorage.getItem(user)) {
-        alert("User already exists");
+        alert("User exists");
         return;
     }
 
@@ -34,11 +34,11 @@ function register() {
     };
 
     localStorage.setItem(user, JSON.stringify(account));
-    alert("Account created!");
+    alert("Account created");
     showLogin();
 }
 
-// Login
+/* LOGIN */
 function login() {
     let user = loginUser.value;
     let pass = loginPass.value;
@@ -51,6 +51,7 @@ function login() {
     }
 
     currentUser = data;
+
     loginPage.classList.add("hidden");
     dashboard.classList.remove("hidden");
 
@@ -58,7 +59,7 @@ function login() {
     updateUI();
 }
 
-// Update UI
+/* UI UPDATE */
 function updateUI() {
     balance.innerText = currentUser.balance;
     history.innerHTML = "";
@@ -68,50 +69,49 @@ function updateUI() {
         li.innerText = item;
         history.appendChild(li);
     });
+
+    updateSidebar();
 }
 
-// Save data
+function updateSidebar() {
+    sideName.innerText = "Name: " + currentUser.username;
+    sideUser.innerText = "Username: " + currentUser.username;
+    sideID.innerText = "Bank ID: FB" + Math.floor(Math.random()*10000);
+    sideBalance.innerText = currentUser.balance;
+}
+
+/* SAVE */
 function save() {
     localStorage.setItem(currentUser.username, JSON.stringify(currentUser));
     updateUI();
 }
 
-// Deposit
+/* BANK ACTIONS */
 function deposit() {
     let amt = parseInt(amount.value);
-
     if (amt > 0) {
         currentUser.balance += amt;
         currentUser.history.push("Deposited ₹" + amt);
         save();
-    } else {
-        alert("Invalid amount");
     }
 }
 
-// Withdraw
 function withdraw() {
     let amt = parseInt(amount.value);
-
     if (amt > currentUser.balance) {
         alert("Insufficient balance");
         return;
     }
-
-    if (amt > 0) {
-        currentUser.balance -= amt;
-        currentUser.history.push("Withdrew ₹" + amt);
-        save();
-    }
+    currentUser.balance -= amt;
+    currentUser.history.push("Withdrew ₹" + amt);
+    save();
 }
 
-// Transfer
 function transfer() {
     let amt = parseInt(amount.value);
     let rec = receiver.value;
 
     let receiverAcc = JSON.parse(localStorage.getItem(rec));
-
     if (!receiverAcc) {
         alert("User not found");
         return;
@@ -125,30 +125,71 @@ function transfer() {
     currentUser.balance -= amt;
     receiverAcc.balance += amt;
 
-    currentUser.history.push("Transferred ₹" + amt + " to " + rec);
+    currentUser.history.push("Sent ₹" + amt + " to " + rec);
     receiverAcc.history.push("Received ₹" + amt + " from " + currentUser.username);
 
     localStorage.setItem(rec, JSON.stringify(receiverAcc));
     save();
 }
 
-// Loan
-function loan() {
-    let amt = parseInt(amount.value);
+/* LOAN PAGE */
+function openLoanPage() {
+    dashboard.classList.add("hidden");
+    loanPage.classList.remove("hidden");
 
-    if (amt > 50000) {
-        alert("Loan limit exceeded (Max ₹50,000)");
+    loanUser.value = currentUser.username;
+}
+
+function processLoan() {
+    let user = loanUser.value;
+    let pass = loanPass.value;
+    let amt = parseInt(loanAmount.value);
+
+    if (user !== currentUser.username || pass !== currentUser.password) {
+        alert("Invalid credentials");
         return;
     }
 
-    if (amt > 0) {
-        currentUser.balance += amt;
-        currentUser.history.push("Loan credited ₹" + amt);
-        save();
-    }
+    let interest = 0.07;
+    let time = amt >= 100000 ? 16 : 12;
+
+    let total = amt + (amt * interest);
+
+    currentUser.balance += amt;
+    currentUser.history.push(`Loan ₹${amt} | 7% | ${time} months`);
+
+    save();
+
+    alert("Loan granted! Repay ₹" + total + " in " + time + " months");
+
+    loanPage.classList.add("hidden");
+    dashboard.classList.remove("hidden");
 }
 
-// Logout
+/* CHEQUE */
+function downloadCheque() {
+    let html = `
+    <html><body style="border:2px solid black;padding:20px;width:600px;font-family:Arial">
+    <h2>FEDERAL BANK</h2>
+    <p>Pay: ______________________</p>
+    <p>Amount: ___________________</p>
+    <p>Name: ${currentUser.username}</p>
+    <p>Balance: ₹${currentUser.balance}</p>
+    <div style="border:2px solid green;border-radius:50%;width:100px;height:100px;text-align:center;padding-top:30px;color:green">
+    FEDERAL BANK
+    </div>
+    <p>Signature: ______________</p>
+    </body></html>
+    `;
+
+    let blob = new Blob([html], {type:"text/html"});
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "cheque.html";
+    a.click();
+}
+
+/* LOGOUT */
 function logout() {
     location.reload();
 }
