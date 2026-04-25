@@ -113,14 +113,20 @@
         </div>
 
         <!-- LOAN PAGE -->
-        <div id="loanPage" class="card hidden">
-            <h2>Loan Request</h2>
-            <input id="loanUser" placeholder="Username">
-            <input id="loanPass" type="password" placeholder="Password">
-            <input id="loanAmount" placeholder="Loan Amount">
-            <input id="collateral" placeholder="Collateral">
-            <button type="button" id="loanBtn">Proceed Loan</button>
-        </div>
+       <div id="loanPage" class="card hidden">
+    <h2>Loan Request</h2>
+
+    <input id="loanUser" placeholder="Username">
+    <input id="loanPass" type="password" placeholder="Password">
+    <input id="loanAmount" placeholder="Loan Amount">
+    <input id="collateral" placeholder="Collateral">
+
+    <!-- ✅ IMPORTANT FIX -->
+    <button type="button" onclick="processLoan()">Proceed Loan</button>
+
+    <!-- Optional back -->
+    <button type="button" onclick="backToDashboard()">Cancel</button>
+</div>
 
     </div>
 </div>
