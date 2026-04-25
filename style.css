@@ -1,18 +1,40 @@
 body {
+    margin: 0;
     font-family: Arial;
-    background: linear-gradient(to right, #004080, #0073e6);
-    color: white;
-    text-align: center;
+    background: #f4f6f9;
 }
 
-.container {
-    margin-top: 60px;
+.main {
+    display: flex;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: #00264d;
+    color: white;
+    padding: 15px;
+    height: 100vh;
+}
+
+.section {
+    margin-bottom: 15px;
+}
+
+.sidebar h3 {
+    border-bottom: 1px solid white;
+}
+
+/* CONTENT */
+.content {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
 }
 
 .card {
     background: white;
-    color: black;
-    padding: 25px;
+    padding: 20px;
     width: 320px;
     margin: auto;
     border-radius: 10px;
@@ -25,17 +47,17 @@ input {
 }
 
 button {
-    padding: 10px;
     width: 95%;
+    padding: 10px;
     margin: 5px;
     background: #004080;
     color: white;
     border: none;
-    cursor: pointer;
+    border-radius: 5px;
 }
 
 button:hover {
-    background: #00264d;
+    background: #001f4d;
 }
 
 .hidden {
@@ -44,20 +66,16 @@ button:hover {
 
 .logout {
     background: red;
-    margin-top: 15px;
-}
-
-#dashboard {
-    background: white;
-    color: black;
-    padding: 20px;
-    width: 400px;
-    margin: auto;
-    border-radius: 10px;
 }
 
 ul {
-    text-align: left;
     max-height: 150px;
     overflow-y: auto;
+    text-align: left;
+}
+
+.ads {
+    background: #e6f0ff;
+    padding: 10px;
+    margin-top: 10px;
 }
