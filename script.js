@@ -265,3 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+function closeNotif() {
+    document.getElementById("notificationBar").style.display = "none";
+}
