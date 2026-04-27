@@ -79,3 +79,37 @@ ul {
     padding: 10px;
     margin-top: 10px;
 }
+.footer {
+    display: flex;
+    justify-content: space-around;
+    background: #00264d;
+    color: white;
+    padding: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    width: 200px;
+}
+
+.footer-section h4 {
+    margin-bottom: 10px;
+}
+
+.footer-section p {
+    font-size: 14px;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.footer-section p:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    background: #001a33;
+    color: white;
+    padding: 10px;
+    font-size: 13px;
+}
