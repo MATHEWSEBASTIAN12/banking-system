@@ -136,3 +136,38 @@ ul {
 .bottom-item:hover {
     color: #00ccff;
 }
+/* NOTIFICATION BAR */
+.notif-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #ffcc00;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+/* SCROLL TEXT */
+#notifText {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    animation: scrollText 12s linear infinite;
+}
+
+@keyframes scrollText {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* CLOSE BUTTON */
+.notif-bar button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
