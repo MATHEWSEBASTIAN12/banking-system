@@ -113,3 +113,26 @@ ul {
     padding: 10px;
     font-size: 13px;
 }
+/* FIXED BOTTOM BAR */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #00264d;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+/* ITEMS */
+.bottom-item {
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.bottom-item:hover {
+    color: #00ccff;
+}
