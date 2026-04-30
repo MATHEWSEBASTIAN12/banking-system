@@ -67,8 +67,11 @@ function login() {
 
 /* UPDATE UI */
 function updateUI() {
+
+    // UPDATE BALANCE
     document.getElementById("balance").innerText = currentUser.balance;
 
+    // UPDATE TRANSACTION HISTORY
     let historyList = document.getElementById("history");
     historyList.innerHTML = "";
 
@@ -78,7 +81,16 @@ function updateUI() {
         historyList.appendChild(li);
     });
 
-    updateSidebar();
+    // UPDATE SIDEBAR DETAILS
+    document.getElementById("sideName").innerText = "Name: " + currentUser.username;
+    document.getElementById("sideUser").innerText = "Username: " + currentUser.username;
+    document.getElementById("sideID").innerText = "Bank ID: FB" + Math.floor(Math.random() * 10000);
+    document.getElementById("sideBalance").innerText = currentUser.balance;
+
+    // 🔥 RENDER CHART (IMPORTANT)
+    if (typeof renderChart === "function") {
+        renderChart();
+    }
 }
 
 /* SIDEBAR */
@@ -267,4 +279,43 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 function closeNotif() {
     document.getElementById("notificationBar").style.display = "none";
+}
+let chartInstance = null;
+function renderChart() {
+
+    let ctx = document.getElementById("balanceChart").getContext("2d");
+
+    // destroy old chart if exists
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    // prepare data
+    let labels = currentUser.history.map((_, i) => "T" + (i + 1));
+    let data = [];
+
+    let tempBalance = 0;
+
+    currentUser.history.forEach(item => {
+        if (item.includes("Deposited")) tempBalance += parseInt(item.split("₹")[1]);
+        else if (item.includes("Withdrew")) tempBalance -= parseInt(item.split("₹")[1]);
+        else if (item.includes("Loan")) tempBalance += parseInt(item.split("₹")[1]);
+        else if (item.includes("Sent")) tempBalance -= parseInt(item.split("₹")[1]);
+        else if (item.includes("Received")) tempBalance += parseInt(item.split("₹")[1]);
+
+        data.push(tempBalance);
+    });
+
+    chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Balance Trend",
+                data: data,
+                fill: false,
+                tension: 0.3
+            }]
+        }
+    });
 }
