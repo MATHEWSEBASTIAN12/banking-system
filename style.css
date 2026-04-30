@@ -171,3 +171,21 @@ ul {
     font-size: 16px;
     cursor: pointer;
 }
+/* DASHBOARD LAYOUT */
+#dashboard {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* PUSH CHART TO BOTTOM */
+.chart-container {
+    margin-top: auto;
+    padding: 20px;
+}
+
+/* MAKE CHART LOOK NICE */
+.chart-container canvas {
+    width: 100% !important;
+    max-height: 250px;
+}
